@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>Classic Voice - DJ Drop Generator</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  padding:0;
+  background:#090909;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif
+}
+
+body{
+  padding:15px
+}
+
+.app{
+  width:100%;
+  max-width:560px;
+  margin:auto
+}
+
+.header{
+  text-align:center;
+  padding:15px 0 22px
+}
+
+.logo{
+  font-size:29px;
+  font-weight:900
+}
+
+.subtitle{
+  color:#888;
+  font-size:13px;
+  margin-top:5px
+}
+
+.card{
+  background:#151515;
+  border:1px solid #292929;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:14px
+}
+
+label{
+  display:block;
+  color:#bbb;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  padding:13px;
+  border-radius:11px;
+  border:1px solid #333;
+  background:#0d0d0d;
+  color:#fff;
+  font-size:15px;
+  outline:none
+}
+
+textarea{
+  height:150px;
+  resize:vertical;
+  line-height:1.5
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#777
+}
+
+.section{
+  margin-top:18px
+}
+
+.section-title{
+  color:#ddd;
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:10px
+}
+
+.reference,
+.effect-box{
+  background:#101010;
+  border:1px solid #292929;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:10px
+}
+
+.voice-name{
+  font-size:16px;
+  font-weight:800
+}
+
+.voice-id{
+  margin-top:5px;
+  color:#777;
+  font-size:10px;
+  word-break:break-all
+}
+
+.preset-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px
+}
+
+button{
+  font-family:inherit;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent
+}
+
+button:active{
+  transform:scale(.98)
+}
+
+.preset,
+.action{
+  border:1px solid #333;
+  background:#202020;
+  color:#fff;
+  padding:14px 7px;
+  border-radius:11px;
+  font-size:13px;
+  font-weight:800
+}
+
+.generate{
+  width:100%;
+  border:none;
+  border-radius:13px;
+  padding:17px;
+  margin-top:18px;
+  background:#fff;
+  color:#000;
+  font-size:16px;
+  font-weight:900
+}
+
+.generate:disabled{
+  opacity:.5;
+  cursor:not-allowed
+}
+
+.status{
+  text-align:center;
+  min-height:24px;
+  margin:14px 0;
+  color:#aaa;
+  font-size:13px;
+  font-weight:700
+}
+
+.ok{
+  color:#8fd18f!important
+}
+
+.error{
+  color:#ff8d8d!important
+}
+
+audio{
+  display:block;
+  width:100%;
+  margin-top:8px
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:10px
+}
+
+.control{
+  margin-top:17px
+}
+
+.control-head{
+  display:flex;
+  justify-content:space-between;
+  color:#aaa;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px
+}
+
+input[type=range]{
+  padding:0;
+  border:none;
+  accent-color:#fff;
+  height:25px
+}
+
+.effect-title{
+  font-size:15px;
+  font-weight:800;
+  margin-bottom:5px
+}
+
+.setting-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid #292929
+}
+
+.setting-row:last-child{
+  border-bottom:none
+}
+
+.small-note{
+  color:#666;
+  font-size:11px;
+  line-height:1.5;
+  margin-top:10px
+}
+
+.footer{
+  text-align:center;
+  color:#555;
+  font-size:11px;
+  padding:8px 0 20px
+}
+
+.hidden{
+  display:none!important
+}
+
+@media(max-width:380px){
+  body{
+    padding:8px
+  }
+
+  .card{
+    padding:14px
+  }
+
+  .logo{
+    font-size:25px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">CLASSIC VOICE</div>
+  <div class="subtitle">
+    Professional DJ Drop & Radio Voice Generator
+  </div>
+</div>
+
+
+<!-- VOICE -->
+<div class="card">
+
+  <div class="section-title">🎙️ VOICE</div>
+
+  <div class="reference">
+    <div class="voice-name">DJ Zeus</div>
+
+    <div class="voice-id">
+      Reference ID:
+      7e0f9863dea0412496e52691f1365d06
+    </div>
+  </div>
+
+  <label for="model">Model</label>
+
+  <input
+    id="model"
+    value="s2.1-pro-free"
+  >
+
+  <label
+    for="referenceId"
+    style="margin-top:15px"
+  >
+    Reference ID
+  </label>
+
+  <input
+    id="referenceId"
+    value="7e0f9863dea0412496e52691f1365d06"
+  >
+
+  <label
+    for="vocalCharacter"
+    style="margin-top:15px"
+  >
+    Vocal Character
+  </label>
+
+  <select id="vocalCharacter">
+
+    <option value="radio_premium">
+      Radio + Premium
+    </option>
+
+    <option value="deep_commanding">
+      Deep + Commanding
+    </option>
+
+    <option value="deep_aggressive">
+      Deep + Aggressive
+    </option>
+
+    <option value="hype">
+      Hype
+    </option>
+
+    <option value="cinematic">
+      Cinematic
+    </option>
+
+    <option value="smooth">
+      Smooth + Confident
+    </option>
+
+  </select>
+
+</div>
+
+
+<!-- TEXT -->
+<div class="card">
+
+  <label for="text">
+    Text to Speak
+  </label>
+
+  <textarea
+    id="text"
+    placeholder="Type your DJ drop here..."
+  ></textarea>
+
+
+  <div class="section">
+
+    <div class="section-title">
+      PROFESSIONAL PRESETS
+    </div>
+
+    <div class="preset-grid">
+
+      <button
+        type="button"
+        class="preset"
+        id="djBtn"
+      >
+        🎙️ DJ DROP
+      </button>
+
+      <button
+        type="button"
+        class="preset"
+        id="radioBtn"
+      >
+        📻 RADIO
+      </button>
+
+      <button
+        type="button"
+        class="preset"
+        id="hypeBtn"
+      >
+        🔥 HYPE
+      </button>
+
+      <button
+        type="button"
+        class="preset"
+        id="stationBtn"
+      >
+        ⚡ STATION ID
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <button
+    type="button"
+    class="generate"
+    id="generateBtn"
+  >
+    GENERATE PROFESSIONAL VOICE
+  </button>
+
+
+  <div
+    class="status"
+    id="status"
+  >
+    Ready
+  </div>
+
+
+  <audio
+    id="audio"
+    controls
+    preload="metadata"
+    style="display:none"
+  ></audio>
+
+
+  <div
+    class="actions"
+    id="actions"
+    style="display:none"
+  >
+
+    <button
+      type="button"
+      class="action"
+      id="replayBtn"
+    >
+      ▶ Replay
+    </button>
+
+    <button
+      type="button"
+      class="action"
+      id="downloadBtn"
+    >
+      ↓ Save MP3
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- VOICE CONTROLS -->
+<div class="card">
+
+  <div class="section-title">
+    🎚️ VOICE CONTROLS
+  </div>
+
+
+  <div class="control">
+
+    <div class="control-head">
+      <span>Volume</span>
+      <span id="volumeValue">0 dB</span>
+    </div>
+
+    <input
+      type="range"
+      id="volume"
+      min="-20"
+      max="12"
+      step="1"
+      value="0"
+    >
+
+  </div>
+
+
+  <div class="control">
+
+    <div class="control-head">
+      <span>Speed</span>
+      <span id="speedValue">1.00x</span>
+    </div>
+
+    <input
+      type="range"
+      id="speed"
+      min="0.5"
+      max="2"
+      step="0.05"
+      value="1"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- EQ -->
+<div class="card">
+
+  <div class="section-title">
+    🎚️ VOCAL EQ
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Low Cut
+    </div>
+
+    <div class="control-head">
+      <span>Frequency</span>
+      <span id="lowCutValue">80 Hz</span>
+    </div>
+
+    <input
+      type="range"
+      id="lowCut"
+      min="40"
+      max="180"
+      step="5"
+      value="80"
+    >
+
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Presence
+    </div>
+
+    <div class="control-head">
+      <span>Boost</span>
+      <span id="eqValue">3.5 dB</span>
+    </div>
+
+    <input
+      type="range"
+      id="eqPresence"
+      min="0"
+      max="8"
+      step=".5"
+      value="3.5"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- COMPRESSOR -->
+<div class="card">
+
+  <div class="section-title">
+    🔊 VOCAL COMPRESSOR
+  </div>
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Compression
+    </div>
+
+    <div class="control-head">
+      <span>Amount</span>
+      <span id="compValue">68%</span>
+    </div>
+
+    <input
+      type="range"
+      id="compression"
+      min="0"
+      max="100"
+      value="68"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- DE ESSER -->
+<div class="card">
+
+  <div class="section-title">
+    🎤 DE-ESSER
+  </div>
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      S / SH Control
+    </div>
+
+    <div class="control-head">
+      <span>Amount</span>
+      <span id="deEsserValue">30%</span>
+    </div>
+
+    <input
+      type="range"
+      id="deEsser"
+      min="0"
+      max="70"
+      value="30"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- SATURATION -->
+<div class="card">
+
+  <div class="section-title">
+    🔥 VOCAL SATURATION
+  </div>
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Radio Character
+    </div>
+
+    <div class="control-head">
+      <span>Drive</span>
+      <span id="satValue">10%</span>
+    </div>
+
+    <input
+      type="range"
+      id="saturation"
+      min="0"
+      max="30"
+      value="10"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- DELAY -->
+<div class="card">
+
+  <div class="section-title">
+    🎛️ PROFESSIONAL DELAY
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Delay Time
+    </div>
+
+    <div class="control-head">
+      <span>Time</span>
+      <span id="delayValue">360 ms</span>
+    </div>
+
+    <input
+      type="range"
+      id="delayTime"
+      min="120"
+      max="700"
+      step="10"
+      value="360"
+    >
+
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Feedback
+    </div>
+
+    <div class="control-head">
+      <span>Repeats</span>
+      <span id="feedbackValue">18%</span>
+    </div>
+
+    <input
+      type="range"
+      id="delayFeedback"
+      min="0"
+      max="45"
+      value="18"
+    >
+
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Delay Mix
+    </div>
+
+    <div class="control-head">
+      <span>Wet</span>
+      <span id="delayMixValue">10%</span>
+    </div>
+
+    <input
+      type="range"
+      id="delayMix"
+      min="0"
+      max="30"
+      value="10"
+    >
+
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Delay Filter
+    </div>
+
+    <div class="control-head">
+      <span>Brightness</span>
+      <span id="delayFilterValue">4.8 kHz</span>
+    </div>
+
+    <input
+      type="range"
+      id="delayFilter"
+      min="2500"
+      max="8000"
+      step="100"
+      value="4800"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- REVERB -->
+<div class="card">
+
+  <div class="section-title">
+    🌊 PROFESSIONAL REVERB
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Short Plate Reverb
+    </div>
+
+    <div class="control-head">
+      <span>Mix</span>
+      <span id="reverbValue">8%</span>
+    </div>
+
+    <input
+      type="range"
+      id="reverbMix"
+      min="0"
+      max="35"
+      value="8"
+    >
+
+  </div>
+
+
+  <div class="effect-box">
+
+    <div class="effect-title">
+      Decay
+    </div>
+
+    <div class="control-head">
+      <span>Time</span>
+      <span id="reverbDecayValue">1.1 s</span>
+    </div>
+
+    <input
+      type="range"
+      id="reverbDecay"
+      min=".3"
+      max="2.5"
+      step=".1"
+      value="1.1"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- STEREO -->
+<div class="card">
+
+  <div class="section-title">
+    ↔️ STEREO WIDTH
+  </div>
+
+  <div class="control-head">
+    <span>Width</span>
+    <span id="widthValue">70%</span>
+  </div>
+
+  <input
+    type="range"
+    id="stereoWidth"
+    min="0"
+    max="100"
+    value="70"
+  >
+
+</div>
+
+
+<!-- LIMITER -->
+<div class="card">
+
+  <div class="section-title">
+    🔥 FINAL LIMITER
+  </div>
+
+  <div class="control-head">
+    <span>Ceiling</span>
+    <span id="limiterValue">-1 dB</span>
+  </div>
+
+  <input
+    type="range"
+    id="limiter"
+    min="-6"
+    max="-0.1"
+    step=".1"
+    value="-1"
+  >
+
+  <button
+    type="button"
+    class="action"
+    id="resetBtn"
+    style="width:100%;margin-top:15px"
+  >
+    ↺ RESET PROFESSIONAL SETTINGS
+  </button>
+
+</div>
+
+
+<div class="footer">
+  Classic Voice • DJ Zeus • Fish Audio • Professional Web Audio
+</div>
+
+</div>
+
+
+<script>
+"use strict";
+
+/* =====================================================
+   CONFIGURATION
+===================================================== */
+
+/*
+   IMPORTANT:
+   Use the SAME Render service that serves this page.
+
+   Your old code used:
+   https://cv-301e.onrender.com/tts
+
+   That was the wrong backend.
+
+   This relative URL sends the request to:
+   https://cv-2-tqrl.onrender.com/tts
+*/
+const BACKEND = "/tts";
+
+const ZEUS_ID =
+  "7e0f9863dea0412496e52691f1365d06";
+
+
+/* =====================================================
+   GLOBAL AUDIO VARIABLES
+===================================================== */
+
+let audioContext = null;
+let sourceNode = null;
+
+let generatedURL = null;
+let generatedBlob = null;
+
+const N = {};
+
+
+/* =====================================================
+   SHORT DOM HELPER
+===================================================== */
+
+const $ = id => document.getElementById(id);
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function status(message, type = "") {
+
+  const element = $("status");
+
+  element.textContent = message;
+
+  element.className =
+    "status" +
+    (type ? " " + type : "");
+}
+
+
+/* =====================================================
+   PRESETS
+===================================================== */
+
+$("djBtn").addEventListener("click", () => {
+
+  $("vocalCharacter").value =
+    "deep_commanding";
+
+  $("text").value =
+    "DJ Zeus... bringing you the sound of the future!";
+
+});
+
+
+$("radioBtn").addEventListener("click", () => {
+
+  $("vocalCharacter").value =
+    "radio_premium";
+
+  $("text").value =
+    "You're locked in with DJ Zeus... the hottest sounds are right here!";
+
+});
+
+
+$("hypeBtn").addEventListener("click", () => {
+
+  $("vocalCharacter").value =
+    "hype";
+
+  $("text").value =
+    "DJ Zeus! Make some noise! Turn it up! Let's go!";
+
+});
+
+
+$("stationBtn").addEventListener("click", () => {
+
+  $("vocalCharacter").value =
+    "radio_premium";
+
+  $("text").value =
+    "This is your number one station... bringing you the biggest sounds!";
+
+});
+
+
+/* =====================================================
+   REVERB IMPULSE
+===================================================== */
+
+function createReverb(seconds = 1.1) {
+
+  if (!audioContext) return null;
+
+  const rate =
+    audioContext.sampleRate;
+
+  const length =
+    Math.max(1, Math.floor(rate * seconds));
+
+  const impulse =
+    audioContext.createBuffer(
+      2,
+      length,
+      rate
+    );
+
+  for (let channel = 0; channel < 2; channel++) {
+
+    const data =
+      impulse.getChannelData(channel);
+
+    for (let i = 0; i < length; i++) {
+
+      const decay =
+        Math.pow(1 - i / length, 3);
+
+      data[i] =
+        (Math.random() * 2 - 1) * decay;
+    }
+  }
+
+  return impulse;
+}
+
+
+/* =====================================================
+   SATURATION CURVE
+===================================================== */
+
+function makeSaturation(amount) {
+
+  const curve =
+    new Float32Array(44100);
+
+  const drive =
+    1 + amount * 8;
+
+  for (let i = 0; i < curve.length; i++) {
+
+    const x =
+      (i * 2) /
+      (curve.length - 1) -
+      1;
+
+    curve[i] =
+      Math.tanh(x * drive);
+  }
+
+  return curve;
+}
+
+
+/* =====================================================
+   AUDIO INITIALIZATION
+===================================================== */
+
+async function initAudio() {
+
+  if (audioContext) {
+
+    if (
+      audioContext.state === "suspended"
+    ) {
+      await audioContext.resume();
+    }
+
+    return;
+  }
+
+
+  const AudioCtx =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+
+  if (!AudioCtx) {
+
+    throw new Error(
+      "Web Audio is not supported on this device."
+    );
+  }
+
+
+  audioContext =
+    new AudioCtx();
+
+
+  const audio =
+    $("audio");
+
+
+  sourceNode =
+    audioContext.createMediaElementSource(
+      audio
+    );
+
+
+  /* INPUT */
+
+  N.input =
+    audioContext.createGain();
+
+
+  /* LOW CUT */
+
+  N.lowCut =
+    audioContext.createBiquadFilter();
+
+  N.lowCut.type =
+    "highpass";
+
+
+  /* PRESENCE */
+
+  N.presence =
+    audioContext.createBiquadFilter();
+
+  N.presence.type =
+    "peaking";
+
+  N.presence.frequency.value =
+    3200;
+
+  N.presence.Q.value =
+    0.9;
+
+
+  /* COMPRESSOR */
+
+  N.compressor =
+    audioContext.createDynamicsCompressor();
+
+
+  /* DE ESSER */
+
+  N.deEss =
+    audioContext.createBiquadFilter();
+
+  N.deEss.type =
+    "peaking";
+
+  N.deEss.frequency.value =
+    6500;
+
+  N.deEss.Q.value =
+    2;
+
+
+  /* SATURATION */
+
+  N.saturation =
+    audioContext.createWaveShaper();
+
+  N.saturation.oversample =
+    "4x";
+
+
+  /* DELAY */
+
+  N.delay =
+    audioContext.createDelay(1);
+
+  N.feedback =
+    audioContext.createGain();
+
+  N.delayFilter =
+    audioContext.createBiquadFilter();
+
+  N.delayFilter.type =
+    "lowpass";
+
+  N.delayWet =
+    audioContext.createGain();
+
+
+  /* REVERB */
+
+  N.reverb =
+    audioContext.createConvolver();
+
+  N.reverbWet =
+    audioContext.createGain();
+
+
+  /* STEREO */
+
+  N.width =
+    audioContext.createStereoPanner();
+
+
+  /* LIMITER */
+
+  N.limiter =
+    audioContext.createDynamicsCompressor();
+
+
+  /* MASTER */
+
+  N.master =
+    audioContext.createGain();
+
+
+  /* =================================================
+     MAIN CHAIN
+  ================================================= */
+
+  sourceNode.connect(
+    N.input
+  );
+
+  N.input.connect(
+    N.lowCut
+  );
+
+  N.lowCut.connect(
+    N.presence
+  );
+
+  N.presence.connect(
+    N.compressor
+  );
+
+  N.compressor.connect(
+    N.deEss
+  );
+
+  N.deEss.connect(
+    N.saturation
+  );
+
+
+  /* DRY */
+
+  N.saturation.connect(
+    N.master
+  );
+
+
+  /* DELAY */
+
+  N.saturation.connect(
+    N.delay
+  );
+
+  N.delay.connect(
+    N.delayFilter
+  );
+
+  N.delayFilter.connect(
+    N.feedback
+  );
+
+  N.feedback.connect(
+    N.delay
+  );
+
+  N.delayFilter.connect(
+    N.delayWet
+  );
+
+  N.delayWet.connect(
+    N.master
+  );
+
+
+  /* REVERB */
+
+  N.saturation.connect(
+    N.reverb
+  );
+
+  N.reverb.connect(
+    N.reverbWet
+  );
+
+  N.reverbWet.connect(
+    N.master
+  );
+
+
+  /* OUTPUT */
+
+  N.master.connect(
+    N.width
+  );
+
+  N.width.connect(
+    N.limiter
+  );
+
+  N.limiter.connect(
+    audioContext.destination
+  );
+
+
+  applyEffects();
+}
+
+
+/* =====================================================
+   APPLY AUDIO EFFECTS
+===================================================== */
+
+function applyEffects() {
+
+  if (!audioContext) return;
+
+
+  const now =
+    audioContext.currentTime;
+
+
+  const volume =
+    Number($("volume").value);
+
+  const speed =
+    Number($("speed").value);
+
+  const lowCut =
+    Number($("lowCut").value);
+
+  const presence =
+    Number($("eqPresence").value);
+
+  const comp =
+    Number($("compression").value);
+
+  const deEss =
+    Number($("deEsser").value);
+
+  const sat =
+    Number($("saturation").value);
+
+  const delayTime =
+    Number($("delayTime").value);
+
+  const feedback =
+    Number($("delayFeedback").value);
+
+  const delayMix =
+    Number($("delayMix").value);
+
+  const delayFilter =
+    Number($("delayFilter").value);
+
+  const reverbMix =
+    Number($("reverbMix").value);
+
+  const reverbDecay =
+    Number($("reverbDecay").value);
+
+  const width =
+    Number($("stereoWidth").value);
+
+  const ceiling =
+    Number($("limiter").value);
+
+
+  /* =================================================
+     DISPLAY VALUES
+  ================================================= */
+
+  $("volumeValue").textContent =
+    volume + " dB";
+
+  $("speedValue").textContent =
+    speed.toFixed(2) + "x";
+
+  $("lowCutValue").textContent =
+    lowCut + " Hz";
+
+  $("eqValue").textContent =
+    presence + " dB";
+
+  $("compValue").textContent =
+    comp + "%";
+
+  $("deEsserValue").textContent =
+    deEss + "%";
+
+  $("satValue").textContent =
+    sat + "%";
+
+  $("delayValue").textContent =
+    delayTime + " ms";
+
+  $("feedbackValue").textContent =
+    feedback + "%";
+
+  $("delayMixValue").textContent =
+    delayMix + "%";
+
+  $("delayFilterValue").textContent =
+    (delayFilter / 1000).toFixed(1) +
+    " kHz";
+
+  $("reverbValue").textContent =
+    reverbMix + "%";
+
+  $("reverbDecayValue").textContent =
+    reverbDecay.toFixed(1) +
+    " s";
+
+  $("widthValue").textContent =
+    width + "%";
+
+  $("limiterValue").textContent =
+ 
