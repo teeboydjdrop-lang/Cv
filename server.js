@@ -3,6 +3,10 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
+/* Fish Audio credentials are server-side only. */
+const FISH_API_KEY = process.env.FISH_API_KEY?.trim();
+const FISH_REFERENCE_ID = process.env.FISH_REFERENCE_ID?.trim() || "7e0f9863dea0412496e52691f1365d06";
+
 const app = express();
 
 /* =====================================================
@@ -118,7 +122,9 @@ app.get("/health", (req, res) => {
     status: "ok",
     service: "Classic Voice",
     model: "s2-pro-free",
-    indexFound: !!findIndexFile()
+    indexFound: !!findIndexFile(),
+    fishApiKeyConfigured: Boolean(FISH_API_KEY),
+    fishReferenceIdConfigured: Boolean(FISH_REFERENCE_ID)
   });
 });
 
@@ -153,8 +159,7 @@ app.post("/tts", async (req, res) => {
        Keep this ONLY in Render Environment Variables.
     ------------------------------------------------ */
 
-    const apiKey =
-      process.env.FISH_API_KEY;
+    const apiKey = FISH_API_KEY;
 
     if (!apiKey) {
       console.error(
@@ -172,9 +177,8 @@ app.post("/tts", async (req, res) => {
     ------------------------------------------------ */
 
     const referenceId =
-      reference_id ||
-      process.env.FISH_REFERENCE_ID ||
-      "7e0f9863dea0412496e52691f1365d06";
+      (typeof reference_id === "string" && reference_id.trim()) ||
+      FISH_REFERENCE_ID;
 
     console.log("---------------------------------");
     console.log("TTS REQUEST RECEIVED");
